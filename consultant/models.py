@@ -1,3 +1,21 @@
 from django.db import models
 
-# Create your models here.
+class Answer(models.Model):
+    heart_disease = models.CharField(max_length=10)
+    bmi = models.IntegerField()
+    smoking = models.CharField(max_length=10)
+    alcohol_drinking = models.CharField(max_length=10)
+    stroke = models.CharField(max_length=10)
+    physical_health = models.IntegerField()
+    mental_health = models.IntegerField()
+    diff_walking = models.CharField(max_length=10)
+    sex = models.CharField(max_length=10)
+    age_category = models.CharField(max_length=10)
+    race = models.CharField(max_length=10)
+    diabetic = models.CharField(max_length=10)
+    physical_activity = models.CharField(max_length=10)
+    gen_health = models.CharField(max_length=10)
+    sleep_time = models.IntegerField()
+    asthma = models.CharField(max_length=10)
+    kidney_disease = models.CharField(max_length=10)
+    skin_cancer = models.CharField(max_length=10)
