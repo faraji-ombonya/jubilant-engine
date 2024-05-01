@@ -11,7 +11,6 @@ class ConsultantManager():
         self.base_dir = settings.BASE_DIR
         self.consultant_v1 = pickle.load(
             open(str(self.base_dir) + "/consultant_v1.pkl", "rb"))
-        print(f"Consultant: {self.consultant_v1}")
 
     def to_data_frame(self, answer):
 
@@ -38,30 +37,47 @@ class ConsultantManager():
         return df
 
     def to_binary_features(self, df):
-        df["Smoking"] = df["Smoking"].replace({"Yes": 1, "No": 0})
-        df["AlcoholDrinking"] = df["AlcoholDrinking"].replace({"Yes": 1, "No": 0})
-        df["Stroke"] = df["Stroke"].replace({"Yes": 1, "No": 0})
-        df["DiffWalking"] = df["DiffWalking"].replace({"Yes": 1, "No": 0})
-        df["Sex"] = df["Sex"].replace({"Male": 1, "Female": 0})
-        df["PhysicalActivity"] = df["PhysicalActivity"].replace({"Yes": 1, "No": 0})
-        df["Asthma"] = df["Asthma"].replace({"Yes": 1, "No": 0})
-        df["KidneyDisease"] = df["KidneyDisease"].replace({"Yes": 1, "No": 0})
-        df["SkinCancer"] = df["SkinCancer"].replace({"Yes": 1, "No": 0})
-        print(f"Binary features:")
-        print(df)
+        pd.set_option("future.no_silent_downcasting", True)
+
+        df["Smoking"] = df["Smoking"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["AlcoholDrinking"] = df["AlcoholDrinking"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["Stroke"] = df["Stroke"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["DiffWalking"] = df["DiffWalking"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["Sex"] = df["Sex"].replace(
+            {"Male": 1, "Female": 0}).infer_objects(copy=False)
+        df["PhysicalActivity"] = df["PhysicalActivity"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["Asthma"] = df["Asthma"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["KidneyDisease"] = df["KidneyDisease"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
+        df["SkinCancer"] = df["SkinCancer"].replace(
+            {"Yes": 1, "No": 0}).infer_objects(copy=False)
         return df
 
     def to_numbers(self, binary_features):
         categorical_features = ["Diabetic", "Race", "GenHealth", "AgeCategory"]
-        one_hot = OneHotEncoder()
+
+        diabetic_categories = [
+            "No", "Yes", "No, borderline diabetes", "Yes (during pregnancy)"]
+        race_categories = ["White", "Hispanic", "Black",
+                           "Other", "American Indian/Alaskan Native", "Asian"]
+        gen_health_categories = [
+            "Good", "Very good", "Fair", "Excellent", "Poor"]
+        age_categories = ["18-24", "30-34", "25-29", "70-74", "80 or older",
+                          "65-69", "60-64", "75-79", "55-59", "50-54", "45-49", "40-44", "35-39"]
+
+        one_hot = OneHotEncoder(categories=[
+                                diabetic_categories, race_categories, gen_health_categories, age_categories])
         transformer = ColumnTransformer(
             [("one_hot", one_hot, categorical_features)],
-            remainder="passthrough"
-        )
+            remainder="passthrough")
 
         t_X = transformer.fit_transform(binary_features)
-
-        print(f"Transformed X: {t_X}")
         return t_X
 
     def predict(self, t_X):

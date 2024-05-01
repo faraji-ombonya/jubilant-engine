@@ -13,9 +13,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         numbers = m.to_numbers(binary_features)
         prediction = m.predict(numbers)
 
-        print(f"Prediction: {prediction}")
-
         ret = super().to_representation(instance)
+        ret['heart_disease'] = prediction[0]
+
+        return ret
 
     class Meta:
         model = Answer
