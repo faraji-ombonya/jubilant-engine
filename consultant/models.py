@@ -2,7 +2,7 @@ from django.db import models
 
 class Answer(models.Model):
     heart_disease = models.CharField(max_length=10, null=True, blank=True)
-    bmi = models.IntegerField()
+    bmi = models.FloatField()
     smoking = models.CharField(max_length=10)
     alcohol_drinking = models.CharField(max_length=10)
     stroke = models.CharField(max_length=10)
