@@ -12,7 +12,7 @@ class Answer(models.Model):
     sex = models.CharField(max_length=10)
     age_category = models.CharField(max_length=10)
     race = models.CharField(max_length=10)
-    diabetic = models.CharField(max_length=10)
+    diabetic = models.CharField(max_length=40)
     physical_activity = models.CharField(max_length=10)
     gen_health = models.CharField(max_length=10)
     sleep_time = models.IntegerField()
